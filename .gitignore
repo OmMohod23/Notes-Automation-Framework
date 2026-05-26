@@ -1,0 +1,13 @@
+/target/
+
+/allure-results/
+
+/allure-report/
+
+/logs/
+
+/screenshots/
+
+/.idea/
+
+*.iml

@@ -1,0 +1,75 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Notes Automation Suite"
+
+       parallel="tests"
+
+       thread-count="2">
+
+    <listeners>
+
+        <listener class-name="listeners.RetryListener"/>
+
+    </listeners>
+
+    <test name="Login Tests">
+
+        <classes>
+
+            <class name="runners.LoginRunner"/>
+
+        </classes>
+
+    </test>
+
+    <test name="Notes UI Tests">
+
+        <classes>
+
+            <class name="runners.NotesUIRunner"/>
+
+        </classes>
+
+    </test>
+
+    <test name="Notes API Tests">
+
+        <classes>
+
+            <class name="runners.NotesAPIRunner"/>
+
+        </classes>
+
+    </test>
+
+    <test name="Hybrid Tests">
+
+        <classes>
+
+            <class name="runners.HybridRunner"/>
+
+        </classes>
+
+    </test>
+
+    <test name="Performance Tests">
+
+        <classes>
+
+            <class name="runners.PerformanceRunner"/>
+
+        </classes>
+
+    </test>
+
+    <test name="Negative Tests">
+
+        <classes>
+
+            <class name="runners.NegativeRunner"/>
+
+        </classes>
+
+    </test>
+
+</suite>
