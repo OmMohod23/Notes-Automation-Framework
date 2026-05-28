@@ -24,15 +24,14 @@ public class WaitUtils {
     }
 
     public static WebElement waitForElementVisible(By locator) {
-
+        //explicit wait
         WebDriverWait wait =
                 new WebDriverWait(
                         DriverFactory.getDriver(),
                         Duration.ofSeconds(10)
                 );
 
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(locator)
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)
         );
     }
 

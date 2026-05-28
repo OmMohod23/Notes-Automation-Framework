@@ -33,13 +33,12 @@ public class PerformanceSteps {
 
         ApiUtils.createNote();
 
-        postTime =
-                ApiUtils.response.time();
+        postTime =ApiUtils.response.time();
 
         System.out.println(
                 "POST Response Time: "
                         + postTime
-                        + " ms"
+                        + "ms"
         );
     }
 

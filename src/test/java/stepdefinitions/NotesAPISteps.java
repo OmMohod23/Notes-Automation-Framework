@@ -73,7 +73,7 @@ public class NotesAPISteps {
         );
 
         ApiUtils.response
-                .then()
+                .then()//Starts response validation section in Rest Assured
                 .statusCode(200);
 
         System.out.println(
@@ -88,11 +88,11 @@ public class NotesAPISteps {
                 "\n===== VALIDATING JSON SCHEMA ====="
         );
 
-        ApiUtils.response
+        ApiUtils.response//Uses stored GET Notes API response
                 .then()
                 .assertThat()
                 .body(
-                        matchesJsonSchemaInClasspath(
+                        matchesJsonSchemaInClasspath(//inbuilt method-Rest Assured schema validator method
                                 "schemas/notesSchema.json"
                         )
                 );

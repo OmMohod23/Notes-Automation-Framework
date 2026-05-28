@@ -71,17 +71,9 @@ public class NegativeSteps {
     @Then("note should not be created successfully")
     public void note_should_not_be_created_successfully() {
 
-        Assert.assertTrue(
+        Assert.assertTrue(notesPage.isOversizedTitleValidationDisplayed());
 
-                notesPage
-                        .isOversizedTitleValidationDisplayed()
-        );
-
-        Assert.assertTrue(
-
-                notesPage
-                        .isOversizedDescriptionValidationDisplayed()
-        );
+        Assert.assertTrue(notesPage.isOversizedDescriptionValidationDisplayed());
     }
 
     // ===============================
@@ -93,24 +85,20 @@ public class NegativeSteps {
 
         response =
                 given()
-
                         .header(
                                 "Authorization",
                                 "Bearer invalid_token"
                         )
-
                         .when()
-
                         .get(
                                 "https://practice.expandtesting.com/notes/api/notes"
-                        );
+                        );//401 error
     }
 
     @Then("unauthorized status code should be returned")
     public void unauthorized_status_code_should_be_returned() {
 
         Assert.assertEquals(
-
                 response.getStatusCode(),
                 401
         );
@@ -122,21 +110,17 @@ public class NegativeSteps {
 
         response =
                 given()
-
                         .header(
-                                "x-auth-token",
-                                ApiUtils.token
-                        )
-
+                                "x-auth-token", ApiUtils.token)
                         .contentType("application/json")
 
-                        .body("{}")
+                        .body("{}") //empty JSON object -Required fields missing
 
-                        .when()
+                        .when()//Optional Rest Assured readability keyword. Separates: request setup from request execution
 
                         .post(
                                 "https://practice.expandtesting.com/notes/api/notes"
-                        );
+                        );//400
 
         response.then().log().all();
     }
@@ -145,7 +129,6 @@ public class NegativeSteps {
     public void bad_request_status_code_should_be_returned() {
 
         Assert.assertEquals(
-
                 response.getStatusCode(),
                 400
         );
@@ -156,17 +139,14 @@ public class NegativeSteps {
 
         response =
                 given()
-
                         .header(
                                 "x-auth-token",
                                 ApiUtils.token
                         )
-
                         .when()
-
                         .get(
-                                "https://practice.expandtesting.com/notes/api/notes/507f1f77bcf86cd799439011"
-                        );
+                                "https://practice.expandtesting.com/notes/api/notes/507f1f77bcf86cd799439011"//random note-id
+                        );//404
 
         response.then().log().all();
     }
@@ -175,7 +155,6 @@ public class NegativeSteps {
     public void not_found_status_code_should_be_returned() {
 
         Assert.assertEquals(
-
                 response.getStatusCode(),
                 404
         );

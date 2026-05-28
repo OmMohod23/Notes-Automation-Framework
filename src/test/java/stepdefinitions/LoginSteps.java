@@ -49,12 +49,14 @@ public class LoginSteps {
     @Then("user should login successfully")
     public void user_should_login_successfully() {
 
+        //Waits until browser URL contains: notes/app
         Assert.assertTrue(
                 WaitUtils.waitForUrlContains(
                         "/notes/app"
                 )
         );
 
+        //Checks whether dashboard page loaded properly.
         Assert.assertTrue(
                 dashboardPage.isDashboardLoaded()
         );
@@ -72,10 +74,15 @@ public class LoginSteps {
         String actualError =
                 loginPage.getErrorMessage();
 
+//        Checks whether:actual value == expected value
+//        If values differ: test fails,AssertionError generated
+
+
         Assert.assertEquals(
                 actualError,
-                "Incorrect email address or password"
+                "Incorrect email address or password"//this msg is hardcoded
         );
+        //Compares:actual UI error message withe expected hardcoded message
     }
 
     @When("user enters unregistered email")
@@ -94,13 +101,20 @@ public class LoginSteps {
 
     @Then("email required validation message should display")
     public void email_required_validation_message_should_display() {
+        //current page url
+        String currentUrl = DriverFactory.getDriver().getCurrentUrl();
 
-        String currentUrl =
-                DriverFactory.getDriver().getCurrentUrl();
-
+        //Checks whether current URL still contains:login
+        //Meaning:user was NOT redirected after clicking login
         Assert.assertTrue(
                 currentUrl.contains("login")
         );
+
+        //If user stays on login page:
+        //→ assertion passes
+        //
+        //If redirected elsewhere:
+        //→ assertion fails.
     }
 
     @And("user leaves password field empty")
@@ -111,7 +125,8 @@ public class LoginSteps {
 
     @Then("password required validation message should display")
     public void password_required_validation_message_should_display() {
-
+        //Checks whether current URL still contains:login
+        //Meaning:user was NOT redirected after clicking login
         String currentUrl =
                 DriverFactory.getDriver().getCurrentUrl();
 

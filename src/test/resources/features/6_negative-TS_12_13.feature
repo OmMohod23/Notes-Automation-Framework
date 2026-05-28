@@ -42,6 +42,7 @@ Feature: Negative Validation Scenarios
 
 
   # Scenario: Validate Backend Payload Exceptions (API Errors)
+  #api negative test cases from here
 
   Scenario: Validate HTTP 401 Unauthorized Response for Invalid Token
 

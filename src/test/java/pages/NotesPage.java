@@ -90,22 +90,22 @@ public class NotesPage {
 
 
     // Create Note Actions
-
     public void clickAddNoteButton() {
+        //wait until Add Note button becomes visible
+        WebElement button =WaitUtils.waitForElementVisible(addNoteButton);
 
-        WebElement button =
-                WaitUtils.waitForElementVisible(addNoteButton);
+        //Converts WebDriver into JavaScriptExecutor.Allows execution of JavaScript inside browser
+        JavascriptExecutor js =(JavascriptExecutor) driver;
 
-        JavascriptExecutor js =
-                (JavascriptExecutor) driver;
-
+        //Scrolls page until button comes into visible viewport
         js.executeScript(
-                "arguments[0].scrollIntoView({block:'center'});",
+                "arguments[0].scrollIntoView({block:'center'});", //center=place element into center of the screen
                 button
         );
 
         WaitUtils.sleep(1000);
 
+        //click button now
         js.executeScript(
                 "arguments[0].click();",
                 button
@@ -113,21 +113,19 @@ public class NotesPage {
     }
 
     public void selectCategory(String category) {
-
-        Select select =
-                new Select(
+        //using select for dropdown option
+        Select select =new Select(
                         WaitUtils.waitForElementVisible(
                                 categoryDropdown
                         )
                 );
-
+        //3 ways to select
         select.selectByVisibleText(category);
     }
 
     public void enterTitle(String title) {
 
-        WebElement element =
-                WaitUtils.waitForElementVisible(titleField);
+        WebElement element = WaitUtils.waitForElementVisible(titleField);
 
         element.clear();
 
@@ -136,8 +134,7 @@ public class NotesPage {
 
     public void enterDescription(String description) {
 
-        WebElement element =
-                WaitUtils.waitForElementVisible(descriptionField);
+        WebElement element = WaitUtils.waitForElementVisible(descriptionField);
 
         element.clear();
 
@@ -146,11 +143,8 @@ public class NotesPage {
 
     public void clickCreateButton() {
 
-        WebElement button =
-                WaitUtils.waitForElementVisible(createButton);
-
-        JavascriptExecutor js =
-                (JavascriptExecutor) driver;
+        WebElement button =WaitUtils.waitForElementVisible(createButton);
+        JavascriptExecutor js =(JavascriptExecutor) driver;
 
         js.executeScript(
                 "arguments[0].scrollIntoView({block:'center'});",
@@ -165,20 +159,16 @@ public class NotesPage {
         );
     }
 
-    public boolean isCreatedNoteDisplayed(
-            String title
-    ) {
+    public boolean isCreatedNoteDisplayed(String title) {
 
         WaitUtils.sleep(2000);
 
-        List<WebElement> noteTitles =
-                driver.findElements(noteCardTitle);
+        //store all note card title into list , here noteCardTitle is locator which will find all title element and store in list
+        List<WebElement> noteTitles =driver.findElements(noteCardTitle);
 
         for (WebElement note : noteTitles) {
-
-            if (note.getText()
-                    .trim()
-                    .equals(title)) {
+            //Checks whether current note text matches expected title.
+            if (note.getText().trim().equals(title)) {
 
                 return true;
             }
@@ -189,48 +179,35 @@ public class NotesPage {
 
     // Filter Actions
 
-    public void clickCategoryFilter(
-            String category
-    ) {
-
+    public void clickCategoryFilter(String category) {
         WebElement element = null;
-
         switch (category) {
-
             case "All":
-
                 element =
                         WaitUtils.waitForElementVisible(
                                 allFilterButton
                         );
-
                 break;
 
             case "Home":
-
                 element =
                         WaitUtils.waitForElementVisible(
                                 homeFilterButton
                         );
-
                 break;
 
             case "Work":
-
                 element =
                         WaitUtils.waitForElementVisible(
                                 workFilterButton
                         );
-
                 break;
 
             case "Personal":
-
                 element =
                         WaitUtils.waitForElementVisible(
                                 personalFilterButton
                         );
-
                 break;
         }
 
@@ -252,9 +229,8 @@ public class NotesPage {
         WaitUtils.sleep(1000);
     }
 
-    public boolean isFilteredCategoryDisplayed(
-            String category
-    ) {
+    //Method validates whether all currently visible notes belong to selected category.
+    public boolean isFilteredCategoryDisplayed(String category) {
 
         WaitUtils.sleep(2000);
 
@@ -268,11 +244,10 @@ public class NotesPage {
 
         for (WebElement badge : categoryBadges) {
 
-            String actualCategory =
-                    badge.getText().trim();
+            //Gets text from current category badge.
+            String actualCategory = badge.getText().trim();
 
             if (!actualCategory.equalsIgnoreCase(category)) {
-
                 return false;
             }
         }
@@ -281,7 +256,6 @@ public class NotesPage {
     }
 
     // Modal Validation
-
     public boolean isCreateNoteModalDisplayed() {
 
         return WaitUtils
@@ -306,7 +280,6 @@ public class NotesPage {
     }
 
     // Edit Note Actions
-
     public void clickEditButton() {
 
         WaitUtils
@@ -314,9 +287,7 @@ public class NotesPage {
                 .click();
     }
 
-    public void updateTitle(
-            String updatedTitle
-    ) {
+    public void updateTitle( String updatedTitle) {
 
         WebElement title =
                 WaitUtils.waitForElementVisible(
@@ -328,9 +299,7 @@ public class NotesPage {
         title.sendKeys(updatedTitle);
     }
 
-    public void updateDescription(
-            String updatedDescription
-    ) {
+    public void updateDescription(String updatedDescription) {
 
         WebElement description =
                 WaitUtils.waitForElementVisible(
@@ -343,7 +312,7 @@ public class NotesPage {
     }
 
     public void clickSaveButton() {
-
+        //here create button is termed as save button
         WebElement saveButton =
                 WaitUtils.waitForElementVisible(
                         createButton
@@ -358,25 +327,25 @@ public class NotesPage {
         );
     }
 
+
+    //Method checks whether updated note content appears on page
     public boolean isUpdatedNoteDisplayed() {
 
         WaitUtils.sleep(2000);
 
         return driver
-                .getPageSource()
-                .contains("Updated");
+                .getPageSource()//returns complete HTML source code of current page as String
+                .contains("Updated");//data-testid="note-card-updated-at" this will be found
     }
 
     // Utility Methods
-
-    public boolean isNotePresent(
-            String noteTitle
-    ) {
+    //Method checks whether given note title exists anywhere on current page
+    public boolean isNotePresent( String noteTitle) {
 
         return DriverFactory
                 .getDriver()
                 .getPageSource()
-                .contains(noteTitle);
+                .contains(noteTitle);//Checks whether page source contains provided note title text
     }
 
     public void refreshPage() {
@@ -394,22 +363,18 @@ public class NotesPage {
         title.clear();
     }
 
+    //true → validation message displayed
     public boolean isTitleValidationDisplayed() {
 
         WaitUtils.sleep(1000);
 
-        List<WebElement> validationMessages =
-                driver.findElements(
-                        titleValidationMessage
-                );
+        //Creates list to store validation message elements
+        List<WebElement> validationMessages = driver.findElements(titleValidationMessage);
 
         for (WebElement message : validationMessages) {
 
-            if (message.isDisplayed()
-
-                    && message.getText()
-                    .contains("Title is required")) {
-
+            //Gets visible text from validation element and checks whether it contains: Title is required
+            if (message.isDisplayed() && message.getText().contains("Title is required")) {
                 return true;
             }
         }
@@ -423,9 +388,7 @@ public class NotesPage {
     public void leaveDescriptionFieldEmpty() {
 
         WebElement description =
-                WaitUtils.waitForElementVisible(
-                        descriptionField
-                );
+                WaitUtils.waitForElementVisible(descriptionField);
 
         description.clear();
     }
@@ -434,17 +397,11 @@ public class NotesPage {
 
         WaitUtils.sleep(1000);
 
-        List<WebElement> validationMessages =
-                driver.findElements(
-                        descriptionValidationMessage
-                );
+        List<WebElement> validationMessages = driver.findElements(descriptionValidationMessage);
 
         for (WebElement message : validationMessages) {
 
-            if (message.isDisplayed()
-
-                    && message.getText()
-                    .contains("Description is required")) {
+            if (message.isDisplayed() && message.getText().contains("Description is required")) {
 
                 return true;
             }
@@ -480,13 +437,7 @@ public class NotesPage {
 
         for (WebElement message : validationMessages) {
 
-            if (message.isDisplayed()
-
-                    && message.getText()
-                    .contains(
-                            "Title should be between 4 and 100 characters"
-                    )) {
-
+            if (message.isDisplayed() && message.getText().contains("Title should be between 4 and 100 characters")) {
                 return true;
             }
         }
@@ -504,13 +455,7 @@ public class NotesPage {
                 );
 
         for (WebElement message : validationMessages) {
-
-            if (message.isDisplayed()
-
-                    && message.getText()
-                    .contains(
-                            "Description should be between 4 and 1000 characters"
-                    )) {
+            if (message.isDisplayed()&& message.getText().contains("Description should be between 4 and 1000 characters")) {
 
                 return true;
             }

@@ -7,10 +7,7 @@ import org.openqa.selenium.WebDriver;
 public class SafeNavigationUtils {
 
     public static void safeNavigate(
-
-            WebDriver driver,
-
-            String url
+            WebDriver driver, String url
     ) {
 
         int attempts = 0;
@@ -57,9 +54,7 @@ public class SafeNavigationUtils {
 
         throw new RuntimeException(
 
-                "Unable To Load URL After Retries: "
-
-                        + url
+                "Unable To Load URL After Retries: "+ url
         );
     }
 }

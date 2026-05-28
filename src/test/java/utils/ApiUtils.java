@@ -14,43 +14,37 @@ public class ApiUtils {
 
     public static Response response;
 
-    public static void generateToken(
-            String email,
-            String password
-    ) {
+    public static void generateToken(String email,String password) {
 
         System.out.println(
-                "\n===== GENERATING API TOKEN ====="
-        );
+                "\n===== GENERATING API TOKEN =====");
 
-        RestAssured.baseURI =
-                "https://practice.expandtesting.com/notes/api";
+        RestAssured.baseURI ="https://practice.expandtesting.com/notes/api";
 
+        //data sent to server -jsonpayload format
         String payload =
                 "{\n" +
                         "  \"email\": \"" + email + "\",\n" +
                         "  \"password\": \"" + password + "\"\n" +
                         "}";
 
+        //response object -Stores API response returned by server.
         response =
                 given()
 
-                        .log().all()
-
-                        .header(
+                        .log().all() //Prints complete request details in console
+                        .header(//metadata sent with request
                                 "Content-Type",
-                                "application/json"
+                                "application/json"  // I am sending JSON data
                         )
-
-                        .body(payload)
-
+                        .body(payload)      //send email/password data to backend
                         .post("/users/login");
+                        //Sends: POST request  to: users/login
 
-        response.then().log().all();
+        response.then().log().all();//Prints complete response details: status code response JSON headers token
 
-        token =
-                response.jsonPath()
-                        .getString("data.token");
+        token =response.jsonPath()//JSON traversal mechanism
+                        .getString("data.token");//Extracts token field inside data object
 
         System.out.println(
                 "\nGenerated Token: " + token
@@ -59,10 +53,8 @@ public class ApiUtils {
 
     public static void createNote() {
 
-        System.out.println(
-                "\n===== CREATING NOTE VIA API ====="
-        );
-
+        System.out.println("\n===== CREATING NOTE VIA API =====");
+        //json request body
         String payload =
                 "{\n" +
                         "  \"title\": \"API Note\",\n" +
@@ -75,8 +67,8 @@ public class ApiUtils {
 
                         .log().all()
 
-                        .header(
-                                "x-auth-token",
+                        .header(   //Sends authentication token to backend , else 401 Unauthorized
+                                "x-auth-token",//custom authentication header
                                 token
                         )
 
@@ -86,7 +78,7 @@ public class ApiUtils {
                         )
 
                         .body(payload)
-
+                        //Sends: HTTP POST request to: /notes POST means: create new resource/data
                         .post(
                                 "https://practice.expandtesting.com/notes/api/notes"
                         );
@@ -94,14 +86,15 @@ public class ApiUtils {
         response.then().log().all();
 
         noteId =
-                response.jsonPath()
-                        .getString("data.id");
+                response.jsonPath()//Used to navigate/read JSON response.
+                        .getString("data.id");//Extracts id field inside data object from response JSON and stores in noteId variable for later use.
 
         System.out.println(
                 "\nCreated Note ID: " + noteId
         );
     }
 
+    //fetch or retrieve notes from backend API
     public static void getNotes() {
 
         System.out.println(
@@ -109,15 +102,12 @@ public class ApiUtils {
         );
 
         response =
-                given()
-
+                given() //Starts Rest Assured request builder. Used to configure request
                         .log().all()
 
                         .header(
-                                "x-auth-token",
-                                token
+                                "x-auth-token",token
                         )
-
                         .get(
                                 "https://practice.expandtesting.com/notes/api/notes"
                         );
@@ -128,35 +118,28 @@ public class ApiUtils {
     public static void deleteNote() {
 
         System.out.println(
-                "\n===== DELETING NOTE ID: "
-                        + noteId
-                        + " ====="
+                "\n===== DELETING NOTE ID: "+ noteId+ " ====="
         );
 
-        response =
-                given()
-
+        response = given()
                         .log().all()
-
                         .header(
-                                "x-auth-token",
-                                token
+                                "x-auth-token",token
                         )
-
                         .delete(
-                                "https://practice.expandtesting.com/notes/api/notes/"
-                                        + noteId
+                                "https://practice.expandtesting.com/notes/api/notes/"+ noteId
                         );
 
         response.then().log().all();
     }
 
+    //PUT method
     public static void updateNote() {
 
         System.out.println(
                 "\n===== UPDATING NOTE ====="
         );
-
+        //Creates JSON request body containing updated note data
         String payload =
                 "{\n" +
                         "  \"title\": \"Updated API Note\",\n" +
@@ -166,24 +149,18 @@ public class ApiUtils {
 
         response =
                 given()
-
                         .log().all()
-
                         .header(
                                 "x-auth-token",
                                 token
                         )
-
                         .header(
                                 "Content-Type",
                                 "application/json"
                         )
-
-                        .body(payload)
-
+                        .body(payload)//Attaches updated note data to request
                         .put(
-                                "https://practice.expandtesting.com/notes/api/notes/"
-                                        + noteId
+                                "https://practice.expandtesting.com/notes/api/notes/"+ noteId
                         );
 
         response.then().log().all();

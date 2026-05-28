@@ -78,9 +78,7 @@ public class NotesUISteps {
     public void newly_created_note_should_appear_in_notes_list() {
 
         Assert.assertTrue(
-                notesPage.isCreatedNoteDisplayed(
-                        createdTitle
-                )
+                notesPage.isCreatedNoteDisplayed(createdTitle)
         );
     }
 
@@ -99,6 +97,7 @@ public class NotesUISteps {
                 notesPage.isFilteredCategoryDisplayed(category)
         );
     }
+
     @Then("create note modal should display correctly")
     public void create_note_modal_should_display_correctly() {
 
@@ -114,17 +113,13 @@ public class NotesUISteps {
     }
 
     @When("user updates note title to {string}")
-    public void user_updates_note_title_to(
-            String updatedTitle
-    ) {
+    public void user_updates_note_title_to(String updatedTitle) {
 
         notesPage.updateTitle(updatedTitle);
     }
 
     @When("user updates note description to {string}")
-    public void user_updates_note_description_to(
-            String updatedDescription
-    ) {
+    public void user_updates_note_description_to(String updatedDescription) {
 
         notesPage.updateDescription(updatedDescription);
     }
@@ -139,7 +134,6 @@ public class NotesUISteps {
     public void updated_note_should_appear_in_notes_list() {
 
         Assert.assertTrue(
-
                 notesPage.isUpdatedNoteDisplayed()
         );
     }
